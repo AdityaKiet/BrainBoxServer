@@ -1,0 +1,71 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "User": {
+    "dataSource": "db"
+  },
+  "AccessToken": {
+    "dataSource": "db",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "db",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "db",
+    "public": false
+  },
+  "Role": {
+    "dataSource": "db",
+    "public": false
+  },
+  "School": {
+    "dataSource": "mongoDS",
+    "public": true
+  },
+  "AccessTokenx": {
+    "dataSource": "mongoDS",
+    "public": false
+  },
+  "Gcm": {
+    "dataSource": "mongoDS",
+    "public": false
+  },
+  "Teacher": {
+    "dataSource": "mongoDS",
+    "public": true
+  },
+  "Student": {
+    "dataSource": "mongoDS",
+    "public": true
+  },
+  "Staff": {
+    "dataSource": "mongoDS",
+    "public": true
+  },
+  "Class": {
+    "dataSource": "mongoDS",
+    "public": true
+  },
+  "LostAndFound": {
+    "dataSource": "mongoDS",
+    "public": true
+  },
+  "ToDoList": {
+    "dataSource": "mongoDS",
+    "public": true
+  }
+}

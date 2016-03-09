@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" class="body-full-height">
+<head>
+    <!-- META SECTION -->
+    <title>School Login - BrainBox</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <!-- END META SECTION -->
+
+    <!-- CSS INCLUDE -->
+    <link rel="stylesheet" type="text/css" id="theme" href="css/theme-default.css"/>
+    <!-- EOF CSS INCLUDE -->
+</head>
+<body>
+
+    <div class="login-container">
+
+        <div class="login-box animated fadeInDown">
+            <div class="login-logo"></div>
+            <div class="login-body">
+                <h4>School Registration</h4>
+                <form action="" role="form" class="form-horizontal" id="wizard-validation" novalidate="novalidate">
+                    <div class="wizard show-submit wizard-validation">
+                        <ul class="steps_2 anchor">
+                            <li>
+                                <a href="#step-1" class="selected" isdone="1" rel="1">
+                                    <span class="stepNumber">1</span>
+                                    <span class="stepDesc">Registration<br></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#step-2" class="disabled" isdone="0" rel="2">
+                                    <span class="stepNumber">2</span>
+                                    <span class="stepDesc">Email verification<br></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#step-3" class="disabled" isdone="0" rel="3">
+                                    <span class="stepNumber">3</span>
+                                    <span class="stepDesc">Account activation<br></span>
+                                </a>
+                            </li>
+                        </ul>
+
+
+
+
+                        <div class="stepContainer"><div id="step-1" class="content" style="display: block;">
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">School Name</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control valid" name="login" placeholder="School name here" aria-required="true" aria-invalid="false"><label id="login-error" class="error" for="login" style="display: none;"></label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Email</label>
+                                <div class="col-md-10">
+                                    <input type="password" class="form-control valid" name="password" placeholder="School email here" id="password" aria-required="true" aria-invalid="false"><label id="password-error" class="error" for="password" style="display: none;"></label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Phone no</label>
+                                <div class="col-md-10">
+                                    <input type="password" class="form-control error" name="repassword" placeholder="Official phone no" aria-required="true" aria-invalid="true"><label id="repassword-error" class="error" for="repassword">Please enter no more than 10 characters.</label>
+                                </div>
+                            </div>
+                            <div class="pull-left">
+                                <a href="login.html" >Have an account?</a>
+                            </div>
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-primary pull-right active">Continue</button>
+                            </div>
+
+                        </div>
+                        <div id="step-2" class="content" style="display: none;">
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Name</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" name="name" placeholder="Name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">E-mail</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" name="email" placeholder="Your email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Adress</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" name="adress" placeholder="Your adress">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+    </div>
+
+</div>
+
+</body>
+
+<!-- START SCRIPTS -->
+<!-- START PLUGINS -->
+<script type="text/javascript" src="js/plugins/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="js/plugins/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/plugins/bootstrap/bootstrap.min.js"></script>
+<!-- END PLUGINS -->
+
+<!-- THIS PAGE PLUGINS -->
+<script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>
+<script type="text/javascript" src="js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
+
+<!-- END PAGE PLUGINS -->
+
+<!-- START TEMPLATE -->
+<script type="text/javascript" src="js/settings.js"></script>
+
+<script type="text/javascript" src="js/plugins.js"></script>
+<script type="text/javascript" src="js/actions.js"></script>
+<!-- END TEMPLATE -->
+<!-- END SCRIPTS -->
+</html>

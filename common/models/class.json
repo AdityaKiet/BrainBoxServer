@@ -1,0 +1,29 @@
+{
+  "name": "Class",
+  "plural": "Classes",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "number",
+      "required": true
+    },
+    "section": {
+      "type": "string",
+      "required": true
+    },
+    "classTeacherId": {
+      "type": "string"
+    },
+    "room": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

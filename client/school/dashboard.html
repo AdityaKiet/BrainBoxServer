@@ -1,0 +1,498 @@
+<!-- PAGE CONTENT WRAPPER -->
+<div class="page-content-wrap">
+
+    <!-- START WIDGETS -->
+    <div class="row">
+        <div class="col-md-3">
+
+            <!-- START WIDGET SLIDER -->
+            <div class="widget widget-default widget-carousel">
+                <div class="owl-carousel" id="owl-example">
+                    <div>
+                        <div class="widget-title">Active Users</div>
+                        <div class="widget-subtitle">27/08/2014 15:23</div>
+                        <div class="widget-int">3,548</div>
+                    </div>
+                    <div>
+                        <div class="widget-title">Students</div>
+                        <div class="widget-subtitle">active</div>
+                        <div class="widget-int">1,695</div>
+                    </div>
+                    <div>
+                        <div class="widget-title">Teachers</div>
+                        <div class="widget-subtitle">active</div>
+                        <div class="widget-int">1,977</div>
+                    </div>
+                </div>
+                <div class="widget-controls">
+                    <a href="active_users.html" class="widget-control-right" data-toggle="tooltip" data-placement="top" title="Open Active Users"><span class="fa fa-external-link"></span></a>
+                </div>
+            </div>
+            <!-- END WIDGET SLIDER -->
+
+        </div>
+        <div class="col-md-3">
+
+            <!-- START WIDGET MESSAGES -->
+            <div class="widget widget-default widget-padding-sm">
+                <div class="widget-big-int">34</div>
+                <div class="widget-subtitle">New Messages</div>
+                <div class="widget-controls">
+                    <a href="mail_inbox.html" class="widget-control-right" data-toggle="tooltip" data-placement="top" title="Open Messages"><span class="fa fa-external-link"></span></a>
+                </div>
+                <div class="widget-buttons widget-c3">
+                    <div class="col">
+                        <a href="mail_compose.html" style="color: #1B1E24;" data-toggle="tooltip" data-placement="bottom" title="New message"><span class="fa fa-edit"></span></a>
+                    </div>
+                    <div class="col">
+                        <a href="mail_inbox.html" style="color: #1B1E24;" data-toggle="tooltip" data-placement="bottom" title="Open Inbox"><span class="fa fa-inbox"></span></a>
+                    </div>
+                    <div class="col">
+                        <a href="mail_inbox.html" style="color: #1B1E24;" data-toggle="tooltip" data-placement="bottom" title="Open Recent"><span class="fa fa-bolt"></span></span></a>
+                    </div>
+                </div>
+            </div>
+            <!-- END WIDGET MESSAGES -->
+
+        </div>
+        <div class="col-md-3">
+
+            <!-- START WIDGET REGISTRED -->
+            <div class="widget widget-default widget-item-icon">
+                <div class="widget-item-left">
+                    <span class="fa fa-user"></span>
+                </div>
+                <div class="widget-data">
+                    <div class="widget-int num-count">375</div>
+                    <div class="widget-title">New Visitors</div>
+                    <div class="widget-subtitle">On your Advertisement</div>
+                </div>
+                <div class="widget-controls">
+                    <a href="advertise.html" class="widget-control-right" data-toggle="tooltip" data-placement="top" title="Open Advertisement"><span class="fa fa-external-link"></span></a>
+                </div>
+            </div>
+            <!-- END WIDGET REGISTRED -->
+
+        </div>
+        <div class="col-md-3">
+
+            <!-- START WIDGET CLOCK -->
+            <div class="widget widget-info widget-padding-sm">
+                <div style="margin-top: 15px;" class="widget-big-int plugin-clock">00:00</div>
+                <div class="widget-subtitle plugin-date">Loading...</div>
+            </div>
+            <!-- END WIDGET CLOCK -->
+
+        </div>
+    </div>
+    <!-- END WIDGETS -->
+
+    <div class="row">
+        <div class="col-md-4">
+
+            <!-- START EVENTS BLOCK -->
+            <!-- EVENT MODAL START -->
+            <div class="modal in" id="event_modal" tabindex="-1" role="dialog" aria-labelledby="largeModalHead" aria-hidden="false" style="display: none;"><div class="modal-backdrop  in"></div>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="largeModalHead">Add Event</h4>
+                    </div>
+                    <div class="">
+                        <form class="form-horizontal">
+                            <div class="panel panel-default" style="padding: 10px;">
+
+                                <div class="form-group">
+                                    <label class="col-md-3 col-xs-12 control-label">New Event</label>
+                                    <div class="col-md-6 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 col-xs-12 control-label">Event Date</label>
+                                    <div class="col-md-6 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                            <input type="text" class="form-control datepicker" value="2014-11-01">
+                                        </div>
+                                        <span class="help-block">Click on input field to get datepicker</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 col-xs-12 control-label">Event Description</label>
+                                    <div class="col-md-6 col-xs-12">
+                                        <textarea class="form-control" rows="5"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 col-xs-12 control-label">Add Co-ordinators</label>
+                                    <div class="col-md-6 col-xs-12">
+                                        <input type="text" class="tagsinput" value="Akshay,Vineet,Shalu"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 col-xs-12 control-label">File</label>
+                                    <div class="col-md-6 col-xs-12">
+                                        <input type="file" class="fileinput btn-primary" name="filename" id="filename" title="Browse file"/>
+                                        <span class="help-block">Input type file</span>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Event Modal End -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>Events</h3>
+                    <span>Upcoming events</span>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" data-toggle="modal" data-target="#event_modal" class="control-primary"><span class="fa fa-plus"></span></a></li>
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="fake-link panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-body panel-body-table">
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th width="50%">Event</th>
+                                <th width="20%">Status</th>
+                                <th width="30%">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Endeavour</strong></td>
+                                <td><span class="label label-warning">Recent</span></td>
+                                <td><span>19-04-2016</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Hackathon</strong></td>
+                                <td><span class="label label-warning">Recent</span></td>
+                                <td><span>23-05-2016</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>CodeVita</strong></td>
+                                <td><span class="label label-success">Upcoming</span></td>
+                                <td><span>01-07-2016</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Epoque</strong></td>
+                                <td><span class="label label-danger">Closed</span></td>
+                                <td><span>08-10-2015</span></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <!-- END EVENTS BLOCK -->
+
+    </div>
+    <div class="col-md-4">
+
+        <!-- TO DO LIST WIDGET -->
+        <!-- TO DO Modal sTART -->
+        <div class="modal in" id="todo_modal" tabindex="-1" role="dialog" aria-labelledby="largeModalHead" aria-hidden="false" style="display: none;"><div class="modal-backdrop  in"></div>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="largeModalHead">Add a ToDo</h4>
+                </div>
+                <div class="">
+                    <form class="form-horizontal">
+                        <div class="panel panel-default" style="padding: 10px;">
+
+                            <div class="form-group">
+                                <label class="col-md-3 col-xs-12 control-label">Subject</label>
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 col-xs-12 control-label">Event Date</label>
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                        <input type="text" class="form-control datepicker" value="2014-11-01">
+                                    </div>
+                                    <span class="help-block">Click on input field to get datepicker</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 col-xs-12 control-label">Description</label>
+                                <div class="col-md-6 col-xs-12">
+                                    <textarea class="form-control" rows="5"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- To Do Modal End -->
+    <div class="panel panel-default">
+        <div class="panel-heading ui-draggable-handle">
+            <h3 class="panel-title">To Do List</h3>
+            <ul class="panel-controls">
+                <li><a href="#" data-toggle="modal" data-target="#todo_modal" class="control-primary"><span class="fa fa-plus"></span></a></li>
+                <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                        <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="panel-body list-group list-group-contacts">
+            <a href="#" class="list-group-item">
+                <span class="contacts-title">Visit CMS</span>
+                <p>on upcoming Tuesday</p>
+                <div class="list-group-controls">
+                    <span class="label label-warning">Recent</span>
+                </div>
+            </a>
+            <a href="#" class="list-group-item">
+                <span class="contacts-title">Meeting</span>
+                <p>with CEO, Flipkart</p>
+                <div class="list-group-controls">
+                    <span class="label label-warning">Recent</span>
+                </div>
+            </a>
+            <a href="#" class="list-group-item">
+                <span class="contacts-title">Organize</span>
+                <p>Dance Competition</p>
+                <div class="list-group-controls">
+                    <span class="label label-danger">Closed</span>
+                </div>
+            </a>
+        </div>
+    </div>
+    <!-- END TO DO LIST WIDGET -->
+
+</div>
+<div class="col-md-4">
+
+    <!-- START SOCIAL MEDIA BLOCK -->
+    <!-- Social Media Modal sTART -->
+    <div class="modal in" id="social_media" tabindex="-1" role="dialog" aria-labelledby="largeModalHead" aria-hidden="false" style="display: none;"><div class="modal-backdrop  in"></div>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="largeModalHead">Add new Social Media</h4>
+            </div>
+            <div class="">
+                <form class="form-horizontal">
+                    <div class="panel panel-default" style="padding: 10px;">
+
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-12 control-label">Name</label>
+                            <div class="col-md-6 col-xs-12">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-12 control-label">Link</label>
+                            <div class="col-md-6 col-xs-12">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="fa fa-link"></span></span>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Social Media Modal End -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="panel-title-box">
+            <h3>Social Media</h3>
+            <span>Manage social media </span>
+        </div>
+        <ul class="panel-controls" style="margin-top: 2px;">
+            <li><a href="#" data-toggle="modal" data-target="#social_media" class="control-primary"><span class="fa fa-plus"></span></a></li>
+            <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+            <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                    <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="panel-body panel-body-table">
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th width="50%">Name</th>
+                        <th width="30%">Update</th>
+                        <th width="20%">Followers</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a target="_blank" href="http://linkedin.com"><strong>LinkedIn</strong></a></td>
+                        <td><span>19-04-2016</span></td>
+                        <td><span>67</span></td>
+                    </tr>
+                    <tr>
+                        <td><a target="_blank" href="http://twitter.com"><strong>Twitter</strong></a></td>
+                        <td><span>23-05-2016</span></td>
+                        <td><span>123</span></td>
+                    </tr>
+                    <tr>
+                        <td><a target="_blank" href="http://facebook.com"><strong>Facebook</strong></a></td>
+                        <td><span>01-07-2016</span></td>
+                        <td><span>432</span></td>
+                    </tr>
+                    <tr>
+                        <td><a target="_blank" href="http://googleplus.com"><strong>Google+</strong></a></td>
+                        <td><span>08-10-2015</span></td>
+                        <td><span>98</span></td>
+                    </tr>
+                    <tr>
+                        <td><a target="_blank" href="http://youtube.com"><strong>Youtube</strong></a></td>
+                        <td><span>08-10-2015</span></td>
+                        <td><span>56</span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+<!-- END SOCIAL MEDIA BLOCK -->
+
+</div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+
+        <!-- START SALES BLOCK -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>Calender</h3>
+                    <span>Plan your schedule and add events</span>
+                </div>
+                <ul class="panel-controls panel-controls-title">
+                    <li>
+                        <div id="reportrange" class="dtrange">
+                            <span></span><b class="caret"></b>
+                        </div>
+                    </li>
+                    <li><a href="#" class="panel-fullscreen rounded"><span class="fa fa-expand"></span></a></li>
+                </ul>
+
+            </div>
+            <div class="panel-body">
+                <div class="calendar">
+                    <div id="calendar"></div>
+                </div>
+            </div>
+        </div>
+        <!-- END SALES BLOCK -->
+
+    </div>
+    <div class="common-modal modal fade" id="common-Modal1" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <ul class="list-inline item-details">
+                <li><a href="http://themifycloud.com/downloads/janux-premium-responsive-bootstrap-admin-dashboard-template/">Admin templates</a></li>
+                <li><a href="http://themescloud.org">Bootstrap themes</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="panel panel-colorful">
+            <div class="panel-body">
+                <h3>Send New SMS</h3>
+                <p>This will send sms to user's mobile</p>
+                <div class="form-group">
+                    <label>Mobile number</label>
+                    <input type="email" class="form-control" placeholder="9876543210"/>
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea class="form-control" placeholder="Your message" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button class="btn btn-success pull-right">Send</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- START DASHBOARD CHART -->
+<div class="chart-holder" id="dashboard-area-1" style="height: 200px;"></div>
+<div class="block-full-width">
+
+</div>
+<!-- END DASHBOARD CHART -->
+
+</div>
+<!-- END PAGE CONTENT WRAPPER -->

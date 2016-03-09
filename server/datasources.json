@@ -1,0 +1,15 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "mongoDS": {
+    "host": "0.0.0.0",
+    "port": 27017,
+    "database": "brainbox",
+    "password": "ainaa",
+    "name": "mongoDS",
+    "connector": "mongodb",
+    "user": "ainaa"
+  }
+}

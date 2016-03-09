@@ -1,0 +1,41 @@
+{
+  "name": "Gcm",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "androidKey": {
+      "type": "string"
+    },
+    "androidKeyCreated": {
+      "type": "date"
+    },
+    "androidKeyExpiry": {
+      "type": "date"
+    },
+    "iosKey": {
+      "type": "string"
+    },
+    "iosKeyCreated": {
+      "type": "string"
+    },
+    "iosKeyExpiry": {
+      "type": "date"
+    },
+    "webKey": {
+      "type": "string"
+    },
+    "webKeyCreated": {
+      "type": "string"
+    },
+    "webKeyExpiry": {
+      "type": "date"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

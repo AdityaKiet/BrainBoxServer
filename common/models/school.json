@@ -1,0 +1,122 @@
+{
+  "name": "School",
+  "plural": "Schools",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "schoolName": {
+      "type": "string"
+    },
+    "schoolBranch": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "mobile": {
+      "type": "string"
+    },
+    "activated": {
+      "type": "boolean",
+      "default": false
+    },
+    "activationToken": {
+      "type": "string"
+    },
+    "activationTokenTtl": {
+      "type": "date"
+    },
+    "emailToken": {
+      "type": "string"
+    },
+    "emailVerified": {
+      "type": "boolean"
+    },
+    "emailTokenTtl": {
+      "type": "date"
+    },
+    "mobileVerified": {
+      "type": "string"
+    },
+    "mobileOtp": {
+      "type": "string"
+    },
+    "mobileOtpTtl": {
+      "type": "string"
+    },
+    "accessToken": {
+      "type": "string"
+    },
+    "accessTokenTtl": {
+      "type": "date"
+    },
+    "givenStudentStrength": {
+      "type": "number"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "gender": {
+      "type": "string"
+    },
+    "video": {
+      "type": "string"
+    },
+    "image": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "address": {
+      "type": "embedsOne",
+      "model": "Address",
+      "property": "address",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "accessTokenxs": {
+      "type": "hasMany",
+      "model": "AccessTokenx",
+      "foreignKey": "userId"
+    },
+    "gcms": {
+      "type": "hasMany",
+      "model": "Gcm",
+      "foreignKey": "userId"
+    },
+    "teachers": {
+      "type": "hasMany",
+      "model": "Teacher",
+      "foreignKey": "schoolId"
+    },
+    "students": {
+      "type": "hasMany",
+      "model": "Student",
+      "foreignKey": "schoolId"
+    },
+    "classes": {
+      "type": "hasMany",
+      "model": "Class",
+      "foreignKey": "schoolId"
+    },
+    "toDoLists": {
+      "type": "hasMany",
+      "model": "ToDoList",
+      "foreignKey": "schoolId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
