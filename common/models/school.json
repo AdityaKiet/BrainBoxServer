@@ -115,6 +115,11 @@
       "type": "hasMany",
       "model": "ToDoList",
       "foreignKey": "schoolId"
+    },
+    "events": {
+      "type": "hasMany",
+      "model": "Event",
+      "foreignKey": "schoolId"
     }
   },
   "acls": [],
