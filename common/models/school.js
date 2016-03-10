@@ -315,6 +315,8 @@ module.exports = function(School) {
 
     School.login = function(data, cb){
         var AccessTokenx =  School.app.models.AccessTokenx;
+        var Student =  School.app.models.Student;
+        var Teacher =  School.app.models.Teacher;
         var validateData = {};
         var currentTime = new Date();
         if(validate.isEmpty(data)){
@@ -327,6 +329,10 @@ module.exports = function(School) {
         }
         if(!data.password){
             cb(util.getGenericError("Error", 400, "Invalid Password"));
+            return;
+        }
+        if(!data.scope){
+            cb(util.getGenericError("Error", 400, "Invalid Scope"));
             return;
         }
 
@@ -358,38 +364,47 @@ module.exports = function(School) {
                     if(data.scope == constant.ANDROID_SCOPE){
                         gcm.androidKey = data.gcmKey;
                         gcm.androidKeyCreated = currentTime;
-                        var d = util.addTime(currentTime, constant.ANDROID_GCM_KEY_TIME);
-                        console.log(d);
-                        gcm.androidKeyExpiry = d;
+                        gcm.androidKeyExpiry = util.addTime(currentTime, constant.ANDROID_GCM_KEY_TIME);
                     }
                     else if(data.scope == constant.IOS_SCOPE){
                         gcm.iosKey = data.gcmKey;
                         gcm.iosKeyCreated = currentTime;
                         gcm.iosKeyExpiry = util.addTime(currentTime, constant.IOS_GCM_KEY_TIME);
-                    }else{
+                    }else if(data.scope == constant.WEB_SCOPE){
                         gcm.webKey = data.gcmKey;
                         gcm.webKeyCreated = currentTime;
                         gcm.webKeyExpiry = util.addTime(currentTime, constant.WEB_GCM_KEY_TIME);
                     }
                     gcm.realm = REALM;
-
                     schoolInstance.gcms.create(gcm, function(err, deviceInstance){
                         if(err){
                             cb(util.getInternalServerError(err));
                             return;
                         }
+                        util.updateUserAccessToken(AccessTokenx, null, schoolInstance.id, data.scope, function(err, accessToken){
+                            if(err){
+                                cb(util.getInternalServerError(err));
+                                return;
+                            }
+                            schoolInstance.accessToken = accessToken;
+                            cb(null, schoolInstance);
+                            return;
+                        });
                     });
                 }
-
-                util.updateUserAccessToken(AccessTokenx, null, schoolInstance.id, data.scope, function(err, accessToken){
-                    if(err){
-                        cb(util.getInternalServerError(err));
-                        return;
-                    }
-                schoolInstance.accessToken = accessToken;
-                cb(null, schoolInstance);
-                return;
-                });
+                else{
+                    Student.count({schoolId: schoolInstance.id}, function(err, count) {
+                        util.updateUserAccessToken(AccessTokenx, null, schoolInstance.id, data.scope, function(err, accessToken){
+                            if(err){
+                                cb(util.getInternalServerError(err));
+                                return;
+                            }
+                            schoolInstance.accessToken = accessToken;
+                            cb(null, schoolInstance);
+                            return;
+                        });
+                    });
+                }
             });
         });
     }; 
@@ -1068,6 +1083,165 @@ module.exports = function(School) {
     );
 
 
+    School.getTeachers = function(query, cb){
+        var Teacher = School.app.models.Teacher;
+        var AccessTokenx = School.app.models.AccessTokenx;
+        var currentTime = new Date();
+        if(validate.isEmpty(query)){
+            cb(util.getGenericError("Invalid data", 400, "Error"));
+            return;
+        }
+        if(!validate.isValidRequired(query)){
+            cb(util.getGenericError("Invalid required data", 400, "Error"));
+            return;
+        }
+
+        if(!query.limit || typeof query.limit != "number" || query.limit <= 0){
+            cb(util.getGenericError("Invalid Limit", 400, "Error"));
+            return;
+        }
+        if(typeof query.skip != "number" || query.skip < 0){
+            cb(util.getGenericError("Invalid skip", 400, "Error"));
+            return;
+        }
+
+        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: query.accessToken}}}], 
+            where: {id: query.id}}, function(err, schoolInstance){
+            if(err){
+                cb(util.getInternalServerError(err));
+                return;
+            }
+            if(!schoolInstance){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+            if(!schoolInstance.accessTokenxs()[0]){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+            if(!currentTime > schoolInstance.accessTokenxs()[0].expiry){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+
+
+            Teacher.find({where : {schoolId : query.id} , limit : query.limit, skip : query.skip}, function(err, teachers){
+                if(err){
+                    cb(util.getInternalServerError(err));
+                    return;
+                }
+                if(!teachers){
+                    cb(util.getGenericError("Error", 400, "Teachers not found"));
+                    return;
+                }
+                util.updateUserAccessToken(AccessTokenx,null , query.id, query.scope, function(err, accessToken){
+                    if(err){    
+                        cb(util.getInternalServerError(err));
+                        return;
+                    }
+                    var response = {};
+                    response.teachers = teachers;
+                    response.count = teachers.length;
+                    var data = {};
+                    data.accessToken = accessToken;
+                    response.data = data;
+                    cb(null, response);
+                });
+            });
+        });
+    };
+    School.remoteMethod(
+        'getTeachers',
+        {
+            description: "Get list of teachers of a school",
+            accepts: {arg: 'query', type: 'object', required: true},
+            returns: {arg:'response',type:'object'},
+            http: {path: '/getTeachers', verb: 'get'}         
+        }   
+    );
+
+
+    School.getStudents = function(query, cb){
+        var Student = School.app.models.Student;
+        var AccessTokenx = School.app.models.AccessTokenx;
+        var currentTime = new Date();
+
+        if(validate.isEmpty(query)){
+            cb(util.getGenericError("Invalid data", 400, "Error"));
+            return;
+        }
+        if(!validate.isValidRequired(query)){
+            cb(util.getGenericError("Invalid required data", 400, "Error"));
+            return;
+        }
+
+        if(!query.limit || typeof query.limit != "number" || query.limit <= 0){
+            cb(util.getGenericError("Invalid Limit", 400, "Error"));
+            return;
+        }
+        if(typeof query.skip != "number" || query.skip < 0){
+            cb(util.getGenericError("Invalid skip", 400, "Error"));
+            return;
+        }
+
+        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: query.accessToken}}}], 
+            where: {id: query.id}}, function(err, schoolInstance){
+            if(err){
+                cb(util.getInternalServerError(err));
+                return;
+            }
+            if(!schoolInstance){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+            if(!schoolInstance.accessTokenxs()[0]){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+            if(!currentTime > schoolInstance.accessTokenxs()[0].expiry){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+
+
+            Student.find({where : {schoolId : query.id} , limit : query.limit, skip : query.skip}, function(err, students){
+                if(err){
+                    cb(util.getInternalServerError(err));
+                    return;
+                }
+                if(!students){
+                    cb(util.getGenericError("Error", 400, "Students not found"));
+                    return;
+                }
+
+                util.updateUserAccessToken(AccessTokenx,null , query.id, query.scope, function(err, accessToken){
+                    if(err){    
+                        cb(util.getInternalServerError(err));
+                        return;
+                    }
+                    var response = {};
+                    response.students = students;
+                    response.count = students.length;
+                    var data = {};
+                    data.accessToken = accessToken;
+                    response.data = data;
+                    cb(null, response);
+                });
+            });
+        });
+    };
+    School.remoteMethod(
+        'getStudents',
+        {
+            description: "Get list of students of a school",
+            accepts: {arg: 'query', type: 'object', required: true},
+            returns: {arg:'response',type:'object'},
+            http: {path: '/getStudents', verb: 'get'}         
+        }   
+    );
+
+
+
     School.sendSmsAlert = function(required , data , cb){
 
     };
@@ -1084,6 +1258,7 @@ module.exports = function(School) {
             http: {path: '/sendSmsAlert', verb: 'post'}
         }
     );
+
 
 
 
