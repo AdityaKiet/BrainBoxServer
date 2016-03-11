@@ -75,6 +75,6 @@ module.exports = {
 
     isValidRequired : function(required){
         return (validator.isMongoId(required.id) && isScope(required.scope) 
-            && required.accessToken;
+            && required.accessToken);
     },
 }

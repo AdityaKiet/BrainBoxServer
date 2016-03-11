@@ -317,8 +317,12 @@ module.exports = function(School) {
         var AccessTokenx =  School.app.models.AccessTokenx;
         var Student =  School.app.models.Student;
         var Teacher =  School.app.models.Teacher;
+        var Event =  School.app.models.Event;
+        var ToDoList = School.app.models.ToDoList;
         var validateData = {};
         var currentTime = new Date();
+        var response = {};
+
         if(validate.isEmpty(data)){
             cb(util.getGenericError("Error", 400, "Invalid Data Received"));
             return;
@@ -394,14 +398,46 @@ module.exports = function(School) {
                 }
                 else{
                     Student.count({schoolId: schoolInstance.id}, function(err, count) {
-                        util.updateUserAccessToken(AccessTokenx, null, schoolInstance.id, data.scope, function(err, accessToken){
-                            if(err){
-                                cb(util.getInternalServerError(err));
-                                return;
-                            }
-                            schoolInstance.accessToken = accessToken;
-                            cb(null, schoolInstance);
-                            return;
+                        if(err){
+                            cb(util.getInternalServerError(err));
+                            return;  
+                        }
+                        schoolInstance.studentCount = count;
+                        Teacher.count({schoolId : schoolInstance.id}, function(err, count){
+                            schoolInstance.teacherCount = count;
+                            schoolInstance.totalUsers = count + schoolInstance.studentCount;
+                            Event.find({where : {schoolId : schoolInstance.id} , limit : 5, skip : 0}, function(err, events){
+                                if(err){
+                                    cb(util.getInternalServerError(err));
+                                    return;
+                                }
+                                response.events = events;
+                                ToDoList.find({where : {schoolId : schoolInstance.id} , limit : 5, skip : 0}, function(err, toDoList){
+                                    if(err){
+                                        cb(util.getInternalServerError(err));
+                                        return;
+                                    }
+                                    response.toDoList = toDoList;
+                                    response.schoolInstance = {};
+                                    response.schoolInstance.schoolName = schoolInstance.schoolName;
+                                    response.schoolInstance.email = schoolInstance.email;
+                                    response.schoolInstance.name = schoolInstance.name;
+                                    response.schoolInstance.id = schoolInstance.id;
+                                    response.schoolInstance.studentCount = schoolInstance.studentCount;
+                                    response.schoolInstance.teacherCount = schoolInstance.teacherCount;
+                                    response.schoolInstance.totalUsers = schoolInstance.totalUsers;
+
+                                    util.updateUserAccessToken(AccessTokenx, null, schoolInstance.id, data.scope, function(err, accessToken){
+                                        if(err){
+                                            cb(util.getInternalServerError(err));
+                                            return;
+                                        }
+                                        response.schoolInstance.accessToken = accessToken;
+                                        cb(null, response);
+                                        return;
+                                    });
+                                });
+                            });
                         });
                     });
                 }
@@ -1242,20 +1278,78 @@ module.exports = function(School) {
 
 
 
-    School.sendSmsAlert = function(required , data , cb){
+    School.sendSmsAlert = function(query , cb){
+        var Student = School.app.models.Student;
+        var AccessTokenx = School.app.models.AccessTokenx;
+        var currentTime = new Date();
 
+        if(validate.isEmpty(query)){
+            cb(util.getGenericError("Invalid data", 400, "Error"));
+            return;
+        }
+        if(!validate.isValidRequired(query)){
+            cb(util.getGenericError("Invalid required data", 400, "Error"));
+            return;
+        }
+        if(!query.message){
+            cb(util.getGenericError("Invalid message", 400, "Error"));
+            return;
+        }
+
+        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: query.accessToken}}}], 
+            where: {id: query.id}}, function(err, schoolInstance){
+            if(err){
+                cb(util.getInternalServerError(err));
+                return;
+            }
+            if(!schoolInstance){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+            if(!schoolInstance.accessTokenxs()[0]){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+            if(!currentTime > schoolInstance.accessTokenxs()[0].expiry){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+            if(query.classId){
+                Student.find({where : {schoolId : query.id, classId : query.classId}}, function(err, students){
+                    if(err){
+                        cb(util.getGenericError("Error", 401,"Not authenticated"));
+                        return;
+                    }
+                    console.log(students);
+                    cb(null, students);
+                    return;
+                });
+            }
+            else if(query.groupId){
+                console.log(query.groupId);
+            } 
+            else if(query.mobile){
+                util.sendSMS(query.mobile , query.message);
+                var response = {};
+                response.status = 200;
+                response.message = "Message has been sent successfully";
+                cb(null , response);
+            }
+            else{
+                cb(util.getGenericError("Invalid Receipent", 400, "Error"));
+                return;
+            }
+
+        });
     };
 
     School.remoteMethod(
         'sendSmsAlert',
         {
             description: "Send SMS",
-            accepts: [
-                        {arg: 'required', type: 'object', required: true},
-                        {arg: 'data', type: 'object', required: true}
-                    ],
+            accepts: {arg: 'query', type: 'object', required: true},
             returns: {arg:'response',type:'object'},
-            http: {path: '/sendSmsAlert', verb: 'post'}
+            http: {path: '/sendSmsAlert', verb: 'get'}
         }
     );
 

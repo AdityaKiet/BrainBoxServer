@@ -23,6 +23,11 @@ ToDoList.addToDoList = function(required, data, cb){
             return;
         } 
 
+        if(!data.title){
+            cb(util.getGenericError("Error", 401,"Title of task not sent"));
+            return;
+        }
+
         School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: required.accessToken}}}], where: {id: required.id}}, function(err, schoolInstance){
             if(err){
                 cb(util.getInternalServerError(err));
@@ -38,11 +43,6 @@ ToDoList.addToDoList = function(required, data, cb){
             }
             if(!currentTime > schoolInstance.accessTokenxs()[0].expiry){
                 cb(util.getGenericError("Error", 401,"Not authenticated"));
-                return;
-            }
-
-            if(!data.title){
-                cb(util.getGenericError("Error", 401,"Title of task not sent"));
                 return;
             }
 

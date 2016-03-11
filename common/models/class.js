@@ -12,10 +12,7 @@ module.exports = function(Class) {
         var Student = Class.app.models.Student;
         var currentTime = new Date();  
         var School = Class.app.models.School;
-
-        console.log(required);
-        console.log(data);
-
+        
         if(validate.isEmpty(required)){
             cb(util.getGenericError("Error", 400, "Data not Received"));
             return;
@@ -112,9 +109,6 @@ module.exports = function(Class) {
         var currentTime = new Date();  
         var School = Class.app.models.School;
 
-        console.log(required);
-        console.log(data);
-
         if(validate.isEmpty(required)){
             cb(util.getGenericError("Error", 400, "Data not Received"));
             return;
@@ -155,7 +149,7 @@ module.exports = function(Class) {
                 return;
             }
 
-            Class.findOne({where : {id : data.classId}}, function(err, classInstance){
+            Class.findOne({where : {id : data.classId , schoolId :  required.id}}, function(err, classInstance){
                 if(err){
                     cb(util.getInternalServerError(err));
                     return;
@@ -170,8 +164,8 @@ module.exports = function(Class) {
 
                 Student.updateAll({id : {inq : data.studentIds }} , updateData , function(err , count){
                     if(err){
-                        cb(util.getGenericError("Error", 401,"Class not registered"));
-                        return; 
+                        cb(util.getInternalServerError(err));
+                        return;
                     }
                     util.updateUserAccessToken(AccessTokenx, schoolInstance.accessTokenxs()[0].id, required.id, required.scope, function(err, accessToken){
                         if(err){
