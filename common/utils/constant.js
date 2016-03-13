@@ -90,3 +90,9 @@ define("RESEND_MOBILE_OTP_HIT_COUNT", 5);
 define("RESEND_MOBILE_OTP_HIT_TIME", 120); // 2 hours
 
 define("DESTROY_ACCESS_TOKEN_TIME",10);         //in minutes
+
+define("TEACHER_PROFILE_UPDATED" , "Hello ! TEACHER_NAME_HERE , your profile has been updated from school admin");
+
+define("STUDENT_PROFILE_UPDATED" , "Hello ! STUDENT_NAME_HERE , your profile has been updated from school admin");
+
+
