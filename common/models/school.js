@@ -152,6 +152,7 @@ module.exports = function(School) {
                     }
                     var response = {};
                     response.status = "200";
+                    reponse.title = 'Successfully registered';
                     response.message = "Your account has been verified, We will go for manual activation and then will let you know.";
                     response.data = {
                         "name": newSchoolInstance.name,
@@ -165,6 +166,7 @@ module.exports = function(School) {
             }
         });
     }
+
     School.remoteMethod(
 		'verifyEmail',
 		{
@@ -218,7 +220,7 @@ module.exports = function(School) {
                             }
                            // res.set('Authorization', accessToken);
                             var response = {};
-                            
+
                             response.status = "200";
                             response.accessToken = accessToken;
                             response.message = "Your account has been Activated, now Redirecting to Dashboard";
@@ -289,7 +291,7 @@ module.exports = function(School) {
                             "email": newSchoolInstance.email
                         };
                         response.status = 200;
-                        response.message = 'School is successfully registered';
+                        response.message = 'Activation link sent';
                         cb(null, response);
                         return;
                     });
@@ -400,7 +402,7 @@ module.exports = function(School) {
                     Student.count({schoolId: schoolInstance.id}, function(err, count) {
                         if(err){
                             cb(util.getInternalServerError(err));
-                            return;  
+                            return;
                         }
                         schoolInstance.studentCount = count;
                         Teacher.count({schoolId : schoolInstance.id}, function(err, count){
@@ -443,7 +445,7 @@ module.exports = function(School) {
                 }
             });
         });
-    }; 
+    };
     School.remoteMethod(
         'login',
         {
@@ -457,7 +459,7 @@ module.exports = function(School) {
     School.addTeacher = function(required , data, cb){
         var AccessTokenx = School.app.models.AccessTokenx;
         var Teacher = School.app.models.Teacher;
-        var currentTime = new Date();  
+        var currentTime = new Date();
 
         if(validate.isEmpty(required)){
             cb(util.getGenericError("Error", 400, "Data not Received"));
@@ -484,7 +486,7 @@ module.exports = function(School) {
             return;
         }
 
-        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: required.accessToken}}}], 
+        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: required.accessToken}}}],
             where: {id: required.id}}, function(err, schoolInstance){
             if(err){
                 cb(util.getInternalServerError(err));
@@ -524,12 +526,12 @@ module.exports = function(School) {
                             return;
                         }
                         util.updateUserAccessToken(AccessTokenx,null , schoolInstance.id, required.scope, function(err, accessToken){
-                            if(err){    
+                            if(err){
                                 cb(util.getInternalServerError(err));
                                 return;
                             }
                             data.accessToken = accessToken;
-                            var html = "<h1>Congrats !!! "+ data.teacherName + " is registered.<br/>Email : " + 
+                            var html = "<h1>Congrats !!! "+ data.teacherName + " is registered.<br/>Email : " +
                             data.email + "<br/>Password : teacher123</h1>";
                             util.sendEmail(data.email, "Success",  html, constant.FROM_NO_REPLY);
                             util.sendSMS(data.mobile, constant.SCHOOL_REG_SMS.replace("SCHOOLNAME", data.teacherName));
@@ -563,7 +565,7 @@ module.exports = function(School) {
     School.addStudent = function(required, data , cb){
         var AccessTokenx = School.app.models.AccessTokenx;
         var Student = School.app.models.Student;
-        var currentTime = new Date();   
+        var currentTime = new Date();
         if(validate.isEmpty(required)){
             cb(util.getGenericError("Error", 400, "Data not Received"));
             return;
@@ -589,7 +591,7 @@ module.exports = function(School) {
             return;
         }
 
-        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: required.accessToken}}}], 
+        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: required.accessToken}}}],
             where: {id: required.id}}, function(err, schoolInstance){
             if(err){
                 cb(util.getInternalServerError(err));
@@ -629,12 +631,12 @@ module.exports = function(School) {
                             return;
                         }
                         util.updateUserAccessToken(AccessTokenx,null , schoolInstance.id, required.scope, function(err, accessToken){
-                            if(err){    
+                            if(err){
                                 cb(util.getInternalServerError(err));
                                 return;
                             }
                             data.accessToken = accessToken;
-                            var html = "<h1>Congrats !!! "+ data.studentName + " is registered.<br/>Email : " + 
+                            var html = "<h1>Congrats !!! "+ data.studentName + " is registered.<br/>Email : " +
                             data.email + "<br/>Password : student123</h1>";
                             util.sendEmail(data.email, "Success",  html, constant.FROM_NO_REPLY);
                             util.sendSMS(data.mobile, constant.SCHOOL_REG_SMS.replace("SCHOOLNAME", data.studentName));
@@ -663,7 +665,7 @@ module.exports = function(School) {
         }
     );
 
-   
+
 
     School.updateProfile = function(required, data, cb){
         var AccessTokenx = School.app.models.AccessTokenx;
@@ -708,7 +710,7 @@ module.exports = function(School) {
                 updatedata.image = searchedSchoolInstance.image;
 
 
-            
+
             if(data.name){
                 if(!validate.isName(data.name)){
                     cb(util.getGenericError("Error",400,"Name is invalid"));
@@ -818,7 +820,7 @@ module.exports = function(School) {
                                 cb(null, response);
                             });
                             });
-                        });  
+                        });
                     });
                 }else{
                     School.updateAll({id: required.id}, updatedata, function(err, count){
@@ -888,7 +890,7 @@ module.exports = function(School) {
             cb(util.getGenericError("Error", 400, "Invalid new password"));
             return;
         }
-        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: required.accessToken}}}], 
+        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: required.accessToken}}}],
             where: {id: required.id}}, function(err, schoolInstance){
             if(err){
                 cb(util.getInternalServerError(err));
@@ -909,7 +911,7 @@ module.exports = function(School) {
             util.comparePassword(data.oldPassword, schoolInstance.password, function(err, isMatched){
                 if(err){
                     cb(util.getInternalServerError(err));
-                    return;   
+                    return;
                 }
                 if(!isMatched){
                     cb(util.getGenericError("Error", 400, "Incorrect old password"));
@@ -1141,7 +1143,7 @@ module.exports = function(School) {
             return;
         }
 
-        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: query.accessToken}}}], 
+        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: query.accessToken}}}],
             where: {id: query.id}}, function(err, schoolInstance){
             if(err){
                 cb(util.getInternalServerError(err));
@@ -1171,7 +1173,7 @@ module.exports = function(School) {
                     return;
                 }
                 util.updateUserAccessToken(AccessTokenx,null , query.id, query.scope, function(err, accessToken){
-                    if(err){    
+                    if(err){
                         cb(util.getInternalServerError(err));
                         return;
                     }
@@ -1192,8 +1194,8 @@ module.exports = function(School) {
             description: "Get list of teachers of a school",
             accepts: {arg: 'query', type: 'object', required: true},
             returns: {arg:'response',type:'object'},
-            http: {path: '/getTeachers', verb: 'get'}         
-        }   
+            http: {path: '/getTeachers', verb: 'get'}
+        }
     );
 
 
@@ -1220,7 +1222,7 @@ module.exports = function(School) {
             return;
         }
 
-        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: query.accessToken}}}], 
+        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: query.accessToken}}}],
             where: {id: query.id}}, function(err, schoolInstance){
             if(err){
                 cb(util.getInternalServerError(err));
@@ -1251,7 +1253,7 @@ module.exports = function(School) {
                 }
 
                 util.updateUserAccessToken(AccessTokenx,null , query.id, query.scope, function(err, accessToken){
-                    if(err){    
+                    if(err){
                         cb(util.getInternalServerError(err));
                         return;
                     }
@@ -1272,8 +1274,8 @@ module.exports = function(School) {
             description: "Get list of students of a school",
             accepts: {arg: 'query', type: 'object', required: true},
             returns: {arg:'response',type:'object'},
-            http: {path: '/getStudents', verb: 'get'}         
-        }   
+            http: {path: '/getStudents', verb: 'get'}
+        }
     );
 
 
@@ -1296,7 +1298,7 @@ module.exports = function(School) {
             return;
         }
 
-        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: query.accessToken}}}], 
+        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: query.accessToken}}}],
             where: {id: query.id}}, function(err, schoolInstance){
             if(err){
                 cb(util.getInternalServerError(err));
@@ -1327,7 +1329,7 @@ module.exports = function(School) {
             }
             else if(query.groupId){
                 console.log(query.groupId);
-            } 
+            }
             else if(query.mobile){
                 util.sendSMS(query.mobile , query.message);
                 var response = {};

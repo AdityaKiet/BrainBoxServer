@@ -11,12 +11,12 @@
     <!-- END META SECTION -->
 
     <!-- CSS INCLUDE -->
-    <link rel="stylesheet" type="text/css" id="theme" href="../css/theme-default.css"/>
+    <link rel="stylesheet" type="text/css" id="theme" href="css/theme-default.css"/>
     <!-- EOF CSS INCLUDE -->
 </head>
 <body>
 
-    <div class="login-container">
+    <div id="register" class="login-container">
 
         <div class="login-box animated fadeInDown" style="width: 70%; padding-top:50px;">
             <div style="text-align: center;"><h2 style="color: #fff;">BrainBox</h2></div>
@@ -24,7 +24,7 @@
                 <div class="row">
                         <div class="col-md-12">
 
-                            <form class="form-horizontal" id="schoolRegistration"  name="schoolRegistration">
+                            <form class="form-horizontal" @submit.prevent="registerSchool">
                             <div class="panel panel-default">
                                 <div class="panel-heading ui-draggable-handle">
                                     <h3 class="panel-title"><strong>Register Your School</strong></h3>
@@ -42,7 +42,7 @@
                                                 <div class="col-md-9">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
-                                                        <input type="text" placeholder="Enter Your School' Name" name="schoolName" class="form-control">
+                                                        <input type="text" placeholder="Enter Your School' Name" v-model="school.schoolName" name="schoolName" class="form-control">
                                                     </div>
                                                     <span class="help-block">* Required</span>
                                                 </div>
@@ -53,7 +53,7 @@
                                                 <div class="col-md-9">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
-                                                        <input type="text" placeholder="Enter Your School's Branch" name="schoolBranch" class="form-control">
+                                                        <input type="text" placeholder="Enter Your School's Branch" v-model="school.schoolBranch" name="schoolBranch" class="form-control">
                                                     </div>
                                                     <span class="help-block">Optional</span>
                                                 </div>
@@ -64,7 +64,7 @@
                                                 <div class="col-md-9 col-xs-12">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
-                                                        <input type="text" name="name" placeholder="Enter Your Name" class="form-control">
+                                                        <input type="text" v-model="school.name" name="name" placeholder="Enter Your Name" class="form-control">
                                                     </div>
                                                     <span class="help-block">* Required</span>
                                                 </div>
@@ -75,7 +75,7 @@
                                                 <div class="col-md-9 col-xs-12">
                                                     <div class="input-group">
                                                         <span class="input-group-addon">@</span>
-                                                        <input type="text" name="email" placeholder="Enter Your Email Id" class="form-control">
+                                                        <input type="text" v-model="school.email" name="email" placeholder="Enter Your Email Id" class="form-control">
                                                     </div>
                                                     <span class="help-block">* Required</span>
                                                 </div>
@@ -86,7 +86,7 @@
                                                 <div class="col-md-9 col-xs-12">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
-                                                        <input type="number" name="mobile" placeholder="Enter Your Mobile Number" class="form-control">
+                                                        <input type="number" v-model="school.mobile" name="mobile" placeholder="Enter Your Mobile Number" class="form-control">
                                                     </div>
                                                     <span class="help-block">* Required</span>
                                                 </div>
@@ -102,7 +102,7 @@
                                                 <div class="col-md-9 col-xs-12">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
-                                                        <input type="text" name="street" placeholder="Enter Your School's Street Address" class="form-control">
+                                                        <input type="text" v-model="school.address.street" name="street" placeholder="Enter Your School's Street Address" class="form-control">
                                                     </div>
                                                     <span class="help-block">* Required</span>
                                                 </div>
@@ -113,7 +113,7 @@
                                                 <div class="col-md-9 col-xs-12">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
-                                                        <input type="text" name="city" placeholder="Enter Your School's City" class="form-control">
+                                                        <input type="text" v-model="school.address.city" name="city" placeholder="Enter Your School's City" class="form-control">
                                                     </div>
                                                     <span class="help-block">* Required</span>
                                                 </div>
@@ -124,7 +124,7 @@
                                                 <div class="col-md-9 col-xs-12">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
-                                                        <input type="text" name="state" placeholder="Enter Your School's State" class="form-control">
+                                                        <input type="text" v-model="school.address.state" name="state" placeholder="Enter Your School's State" class="form-control">
                                                     </div>
                                                     <span class="help-block">* Required</span>
                                                 </div>
@@ -135,7 +135,7 @@
                                                 <div class="col-md-9 col-xs-12">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
-                                                        <input type="text" name="pincode" placeholder="Enter Your School's Pincode" class="form-control">
+                                                        <input type="text" v-model="school.address.pincode" name="pincode" placeholder="Enter Your School's Pincode" class="form-control">
                                                     </div>
                                                     <span class="help-block">* Required</span>
                                                 </div>
@@ -143,7 +143,7 @@
 
                                             <div class="form-group">
                                                 <div class="text-center col-md-12">
-                                                    <label class=" control-label check"><input type="checkbox" name="serviceTerms" checked class="icheckbox"/> </label>
+                                                    <input type="checkbox" v-model="serviceTerms" checked name="serviceTerms"/>
                                                     <span> *Accept <a href="terms_services.html" target="_blank">Terms and Conditions</a></span>
                                                 </div>
                                             </div>
@@ -181,6 +181,8 @@
 <script type="text/javascript" src="js/plugins/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="js/plugins/jquery/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/plugins/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/vue-resource.min.js"></script>
 <!-- END PLUGINS -->
 
 <!-- THIS PAGE PLUGINS -->
@@ -200,13 +202,7 @@
 
 <script type="text/javascript" src="js/plugins.js"></script>
 <script type="text/javascript" src="js/actions.js"></script>
-<script type="text/javascript" src="js/script.js"></script>
-<script>
-    function redirect(){
-        document.location.href="/school";
-        return false;
-    }
-</script>
+<script type="text/javascript" src="js/register.js"></script>
 <!-- END TEMPLATE -->
 <!-- END SCRIPTS -->
 </html>

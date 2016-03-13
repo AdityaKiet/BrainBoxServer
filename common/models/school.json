@@ -50,28 +50,7 @@
     "mobileOtpTtl": {
       "type": "string"
     },
-    "accessToken": {
-      "type": "string"
-    },
-    "accessTokenTtl": {
-      "type": "date"
-    },
-    "givenStudentStrength": {
-      "type": "number"
-    },
-    "firstName": {
-      "type": "string"
-    },
-    "lastName": {
-      "type": "string"
-    },
     "gender": {
-      "type": "string"
-    },
-    "video": {
-      "type": "string"
-    },
-    "image": {
       "type": "string"
     }
   },
