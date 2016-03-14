@@ -11,5 +11,12 @@
     "name": "mongoDS",
     "connector": "mongodb",
     "user": "ainaa"
+  },
+  "storage": {
+    "name": "storage",
+    "connector": "loopback-component-storage",
+    "provider": "filesystem",
+    "root": "/home/abhishek/",
+    "maxFileSize": "52428800"
   }
 }

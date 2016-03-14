@@ -83,5 +83,13 @@
   "Token": {
     "dataSource": "mongoDS",
     "public": false
+  },
+  "FileContainer": {
+    "dataSource": "storage",
+    "public": true
+  },
+  "File": {
+    "dataSource": "mongoDS",
+    "public": true
   }
 }
