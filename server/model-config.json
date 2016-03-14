@@ -71,5 +71,9 @@
   "Event": {
     "dataSource": "mongoDS",
     "public": true
+  },
+  "SuperAdmin": {
+    "dataSource": "mongoDS",
+    "public": true
   }
 }

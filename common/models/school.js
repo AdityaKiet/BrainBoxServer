@@ -520,6 +520,7 @@ module.exports = function(School) {
                         return;
                     }
                     data.password = hashPassword;
+                    data.isFirst = true;
                     schoolInstance.teachers.create(data , function(err, newTeacherInstance){
                         if(err){
                             cb(util.getInternalServerError(err));
@@ -625,6 +626,7 @@ module.exports = function(School) {
                         return;
                     }
                     data.password = hashPassword;
+                    data.isFirst = true;
                     schoolInstance.students.create(data , function(err, newStudentInstance){
                         if(err){
                             cb(util.getInternalServerError(err));
@@ -1282,6 +1284,7 @@ module.exports = function(School) {
 
     School.sendSmsAlert = function(query , cb){
         var Student = School.app.models.Student;
+        var Teacher = School.app.models.Teacher;
         var AccessTokenx = School.app.models.AccessTokenx;
         var currentTime = new Date();
 
@@ -1317,18 +1320,36 @@ module.exports = function(School) {
                 return;
             }
             if(query.classId){
-                Student.find({where : {schoolId : query.id, classId : query.classId}}, function(err, students){
+                Student.find({fields: {mobile: true}}, {where : {schoolId : query.id, classId : query.classId}}, function(err, students){
                     if(err){
                         cb(util.getGenericError("Error", 401,"Not authenticated"));
                         return;
                     }
-                    console.log(students);
-                    cb(null, students);
-                    return;
+                    if(!students){
+                      cb(util.getGenericError("Error", 401,"Students not found"));
+                      return;
+                    }
+                    for(var i = 0 ; i < students.length ; i++){
+                      console.log(students[i]);
+                      util.sendSMS(students[i].mobile, query.message);
+                    }
+                    util.updateUserAccessToken(AccessTokenx,null , query.id, query.scope, function(err, accessToken){
+                        if(err){
+                            cb(util.getInternalServerError(err));
+                            return;
+                        }
+                        var response = {};
+                        response.status = 200;
+                        response.title = "Success";
+                        response.accessToken = accessToken;
+                        response.message = "Messages has been sent successfully!";
+                        cb(null, response);
+                        return;
+                    });
                 });
             }
             else if(query.groupId){
-                console.log(query.groupId);
+
             }
             else if(query.mobile){
                 util.sendSMS(query.mobile , query.message);
@@ -1336,6 +1357,45 @@ module.exports = function(School) {
                 response.status = 200;
                 response.message = "Message has been sent successfully";
                 cb(null , response);
+            }
+            else if(query.all && query.all == true){
+              Student.find({fields: {mobile: true}}, {where : {schoolId : query.id}}, function(err, students){
+                  if(err){
+                      cb(util.getGenericError("Error", 401,"Not authenticated"));
+                      return;
+                  }
+                  if(!students){
+                    cb(util.getGenericError("Error", 401,"Students not found"));
+                    return;
+                  }
+                  Teacher.find({fields: {mobile: true}}, {where : {schoolId : query.id}}, function(err, teachers){
+                      if(err){
+                          cb(util.getGenericError("Error", 401,"Not authenticated"));
+                          return;
+                      }
+                      if(!teachers){
+                        cb(util.getGenericError("Error", 401,"Teachers not found"));
+                        return;
+                      }
+                      var contacts = students.concat(teachers);
+                      for(var i = 0 ; i < contacts.length ; i++){
+                        util.sendSMS(contacts[i].mobile, query.message);
+                      }
+                      util.updateUserAccessToken(AccessTokenx,null , query.id, query.scope, function(err, accessToken){
+                          if(err){
+                              cb(util.getInternalServerError(err));
+                              return;
+                          }
+                          var response = {};
+                          response.status = 200;
+                          response.title = "Success";
+                          response.accessToken = accessToken;
+                          response.message = "Messages has been sent successfully!";
+                          cb(null, response);
+                          return;
+                      });
+                  });
+              });
             }
             else{
                 cb(util.getGenericError("Invalid Receipent", 400, "Error"));
@@ -1371,7 +1431,7 @@ module.exports = function(School) {
             where: {id: query.id}}, function(err, schoolInstance){
             if(err){
                 cb(util.getInternalServerError(err));
-                return;                
+                return;
             }
             if(!schoolInstance){
                 cb(util.getGenericError("Error", 401,"Not authenticated"));
@@ -1414,7 +1474,7 @@ module.exports = function(School) {
     School.updateTeacher = function(required, data, cb){
         var AccessTokenx = School.app.models.AccessTokenx;
         var Teacher = School.app.models.Teacher;
-        var currentTime = new Date(); 
+        var currentTime = new Date();
 
         if(validate.isEmpty(required)){
             cb(util.getGenericError("Error", 400, "Data not Received"));
@@ -1479,7 +1539,7 @@ module.exports = function(School) {
                 if(data.gender){
                     teacherInstance.gender = data.gender;
                 }
-                
+
                 teacherInstance.save(function(err , instance){
                     if(err){
                         cb(util.getInternalServerError(err));
@@ -1524,7 +1584,7 @@ module.exports = function(School) {
     School.updateStudent = function(required, data, cb){
         var AccessTokenx = School.app.models.AccessTokenx;
         var Student = School.app.models.Student;
-        var currentTime = new Date(); 
+        var currentTime = new Date();
 
         if(validate.isEmpty(required)){
             cb(util.getGenericError("Error", 400, "Data not Received"));
@@ -1682,7 +1742,7 @@ module.exports = function(School) {
             cb(util.getGenericError("Error",400,"Data is invalid"));
             return;
         }
-       
+
         School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: query.accessToken}}}], where: {id: query.id}}, function(err, schoolInstance){
             if(err){
                 cb(utils.getInternalServerError(err));
@@ -1700,7 +1760,7 @@ module.exports = function(School) {
                 cb(util.getGenericError("Error", 401,"Not authenticated"));
                 return;
             }
-          
+
             Student.count({schoolId: schoolInstance.id}, function(err, count) {
                 if(err){
                     cb(util.getInternalServerError(err));
@@ -1740,7 +1800,7 @@ module.exports = function(School) {
                                 cb(null, response);
                                 return;
                             });
-                        });                
+                        });
                     });
                 });
             });
