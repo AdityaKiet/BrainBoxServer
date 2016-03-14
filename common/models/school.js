@@ -152,7 +152,7 @@ module.exports = function(School) {
                     }
                     var response = {};
                     response.status = "200";
-                    reponse.title = 'Successfully registered';
+                    response.title = 'Successfully registered';
                     response.message = "Your account has been verified, We will go for manual activation and then will let you know.";
                     response.data = {
                         "name": newSchoolInstance.name,
@@ -477,7 +477,7 @@ module.exports = function(School) {
             cb(util.getGenericError("Error", 400, "Invalid Email"));
             return;
         }
-        if(!data.teacherName || !validator.isLength(data.teacherName, {min:2, max: 100})){
+        if(!data.name || !validator.isLength(data.name, {min:2, max: 100})){
             cb(util.getGenericError("Error", 400, "Invalid Teacher Name"));
             return;
         }
@@ -532,10 +532,10 @@ module.exports = function(School) {
                                 return;
                             }
                             data.accessToken = accessToken;
-                            var html = "<h1>Congrats !!! "+ data.teacherName + " is registered.<br/>Email : " +
+                            var html = "<h1>Congrats !!! "+ data.name + " is registered.<br/>Email : " +
                             data.email + "<br/>Password : teacher123</h1>";
                             util.sendEmail(data.email, "Success",  html, constant.FROM_NO_REPLY);
-                            util.sendSMS(data.mobile, constant.SCHOOL_REG_SMS.replace("SCHOOLNAME", data.teacherName));
+                            util.sendSMS(data.mobile, constant.SCHOOL_REG_SMS.replace("SCHOOLNAME", data.name));
                             var response = {};
                             response.data = data;
                             response.status = 200;
@@ -1519,12 +1519,12 @@ module.exports = function(School) {
                     cb(util.getGenericError("Error", 400, "Teacher not found"));
                     return;
                 }
-                if(data.teacherName){
-                    if(!validate.isName(data.teacherName)){
+                if(data.name){
+                    if(!validate.isName(data.name)){
                         cb(util.getGenericError("Error",400,"Teacher name is invalid"));
                         return;
                     }
-                    teacherInstance.teacherName = data.teacherName;
+                    teacherInstance.name = data.name;
                 }
                 if(data.mobile){
                     if(!validate.isMobile(data.mobile)){
@@ -1551,11 +1551,11 @@ module.exports = function(School) {
                             return;
                         }
                         if(instance.email){
-                            var html = "<h1>Hello " + instance.teacherName + " , your details has been updated from school admin !!!</h1>";
+                            var html = "<h1>Hello " + instance.name + " , your details has been updated from school admin !!!</h1>";
                             util.sendEmail(instance.email, "Success",  html, constant.FROM_NO_REPLY);
                         }
                         if(instance.mobile){
-                            util.sendSMS(instance.mobile, constant.TEACHER_PROFILE_UPDATED.replace("TEACHER_NAME_HERE", instance.teacherName));
+                            util.sendSMS(instance.mobile, constant.TEACHER_PROFILE_UPDATED.replace("TEACHER_NAME_HERE", instance.name));
                         }
                         var response = {};
                         response.accessToken = accessToken;
