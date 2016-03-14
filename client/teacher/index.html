@@ -10,10 +10,10 @@
     <!-- END META SECTION -->
 
     <!-- CSS INCLUDE -->
-    <link rel="stylesheet" type="text/css" id="theme" href="../css/theme-default.css"/>
+    <link rel="stylesheet" type="text/css" id="theme" href="css/theme-default.css"/>
     <!-- EOF CSS INCLUDE -->
 </head>
-<body ng-controller="MainController">
+<body id="dashboard">
     <!-- START PAGE CONTAINER -->
     <div class="page-container">
 
@@ -34,8 +34,8 @@
                             <img src="assets/images/users/avatar.jpg" alt="DPS Lucknow"/>
                         </div>
                         <div class="profile-data">
-                            <div class="profile-data-name">Mr. Arvind Saxena</div>
-                            <div class="profile-data-title">DPS Lucknow</div>
+                            <div class="profile-data-name">{{teacher.name | capitalize}}</div>
+                            <div class="profile-data-title">{{teacher.school.schoolName}}</div>
                         </div>
                         <div class="profile-controls">
                             <a href="profile.html" class="profile-control-left"><span class="fa fa-info"></span></a>
@@ -299,9 +299,9 @@
                                 <span class="fa fa-envelope-o"></span>
                             </div>
                             <div class="widget-data">
-                                <div class="widget-int num-count">375</div>
+                                <div class="widget-int num-count">{{teacher.smsLeft}}</div>
                                 <div class="widget-title">SMS Left</div>
-                                <div class="widget-subtitle">Used SMS : 324</div>
+                                <div class="widget-subtitle">Used SMS : {{teacher.smsUsed}}</div>
                             </div>
                             <div class="widget-controls">
                                 <a href="sms_alert.html" class="widget-control-right" data-toggle="tooltip" data-placement="top" title="Open SMS Alert"><span class="fa fa-external-link"></span></a>
@@ -756,7 +756,7 @@
                 </div>
                 <div class="mb-footer">
                     <div class="pull-right">
-                        <a href="login.html" class="btn btn-success btn-lg">Yes</a>
+                        <a href="#" @click.prevent="logout" class="btn btn-success btn-lg">Yes</a>
                         <button class="btn btn-default btn-lg mb-control-close">No</button>
                     </div>
                 </div>
@@ -775,6 +775,8 @@
     <script type="text/javascript" src="js/plugins/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="js/plugins/jquery/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/plugins/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/vue.min.js"></script>
+    <script type="text/javascript" src="js/vue-resource.min.js"></script>
     <!-- END PLUGINS -->
 
     <!-- START THIS PAGE PLUGINS-->
@@ -793,6 +795,7 @@
     <script type="text/javascript" src="js/plugins.js"></script>
     <script type="text/javascript" src="js/actions.js"></script>
     <!-- END TEMPLATE -->
+    <script type="text/javascript" src="js/app/dashboard.js"></script>
     <!-- END SCRIPTS -->
 </body>
 </html>

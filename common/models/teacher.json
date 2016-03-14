@@ -6,25 +6,59 @@
   "options": {
     "validateUpsert": true
   },
+  "hidden": [
+    "_secrets"
+  ],
   "properties": {
     "name": {
-      "type": "string"
-    },
-    "mobile": {
       "type": "string"
     },
     "email": {
       "type": "string"
     },
-    "gender": {
+    "mobile": {
       "type": "string"
     },
-    "dob": {
-      "type": "string"
+    "isActivated": {
+      "type": "boolean"
+    },
+    "isFirst": {
+      "type": "boolean"
+    },
+    "created": {
+      "type": "date",
+      "defaultFn": "now"
+    },
+    "smsLeft": {
+      "type": "number",
+      "default": 0
+    },
+    "smsUsed": {
+      "type": "number",
+      "default": 0
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "secrets": {
+      "type": "embedsMany",
+      "model": "Secret",
+      "property": "secrets",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "tokens": {
+      "type": "embedsMany",
+      "model": "Token",
+      "property": "tokens",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    }
+  },
   "acls": [],
   "methods": {}
 }

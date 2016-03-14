@@ -30,6 +30,9 @@ define("EMAIL_VERIFICATION_TOKEN_LINK", "http://brainboxapp.com/school/verify_em
 
 define("ACCESSTOKEN_TTL", 21600); // 15 days
 
+
+define("SECRET_TTL", 21600); // 15 days
+
 define("ACTIVATION_TOKEN_LENGTH", 20);
 define("ACTIVATION_TOKEN_TIME", 21600);     // 15 DAYS
 define("ACTIVATION_TOKEN_LINK", "http://brainboxapp.com/activate.html?token=TOKEN_HERE&id=ID_HERE");    // 15 DAYS
@@ -94,5 +97,3 @@ define("DESTROY_ACCESS_TOKEN_TIME",10);         //in minutes
 define("TEACHER_PROFILE_UPDATED" , "Hello ! TEACHER_NAME_HERE , your profile has been updated from school admin");
 
 define("STUDENT_PROFILE_UPDATED" , "Hello ! STUDENT_NAME_HERE , your profile has been updated from school admin");
-
-

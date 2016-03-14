@@ -75,5 +75,13 @@
   "SuperAdmin": {
     "dataSource": "mongoDS",
     "public": true
+  },
+  "Secret": {
+    "dataSource": "mongoDS",
+    "public": false
+  },
+  "Token": {
+    "dataSource": "mongoDS",
+    "public": false
   }
 }
