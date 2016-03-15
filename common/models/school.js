@@ -180,18 +180,17 @@ module.exports = function(School) {
 
 
 
-    School.activateAccount = function(data, cb){
+    School.activateAccount = function(id, token, data, cb){
         var currentTime = new Date();
-      //  console.log(data.query);
-        if(validate.isEmpty(data.query)){
+        if(validate.isEmpty(data)){
             cb(util.getGenericError("Error", 400, "Invalid Data Received"));
             return;
         }
-        if(!validate.isPassword(data.query.password)){
+        if(!validate.isPassword(data.password)){
             cb(util.getGenericError("Error", 400, "Invalid Password"));
             return;
         }
-        School.findOne({where: {id: data.query.id, activationToken: data.query.token}}, function(err, schoolInstance){
+        School.findOne({where: {id: id, activationToken: token}}, function(err, schoolInstance){
             if(err){
                 cb(util.getInternalServerError(err));
                 return;
@@ -199,7 +198,7 @@ module.exports = function(School) {
             if(schoolInstance && schoolInstance.activationTokenTtl > currentTime){
                 schoolInstance.activated = true;
                 schoolInstance.activationToken = "";
-                util.cryptPassword(data.query.password , function(err , hashPassword){
+                util.cryptPassword(data.password , function(err , hashPassword){
                     if(err){
                         cb(util.getInternalServerError(err));
                         return;
@@ -218,17 +217,14 @@ module.exports = function(School) {
                                 cb(util.getInternalServerError(err));
                                 return;
                             }
-                           // res.set('Authorization', accessToken);
                             var response = {};
-
-                            response.status = "200";
-                            response.accessToken = accessToken;
+                            response.data = {};
+                            response.status = 'SUCCESS';
+                            response.data.teacher = updatedSchoolInstance;
                             response.message = "Your account has been Activated, now Redirecting to Dashboard";
-                            response.data = {
-                                "name": newSchoolInstance.name,
-                                "email": newSchoolInstance.email
-                            };
+                            response.data.secret = accessToken;
                             cb(null, response);
+                            return;
                         });
 
                     });
@@ -243,9 +239,9 @@ module.exports = function(School) {
 		'activateAccount',
 		{
 			description: "activates account",
-            accepts: {arg: 'data', type: 'object', http: {source: 'req'}},
+            accepts: [{arg: 'id', type: 'string'}, {arg: 'token', type: 'string'},{arg: 'data', type: 'object', http: {source: 'body'}}],
 			returns: {arg:'response',type:'object', http: { source: 'res'}},
-            http: {path: '/activate_account', verb: 'get'}
+            http: {path: '/activate_account', verb: 'post'}
 		}
 	);
 
