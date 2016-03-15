@@ -1721,6 +1721,7 @@ module.exports = function(School) {
     );
 
     School.getSchoolData = function(query, cb){
+        console.log(query);
         var AccessTokenx =  School.app.models.AccessTokenx;
         var Student =  School.app.models.Student;
         var Teacher =  School.app.models.Teacher;

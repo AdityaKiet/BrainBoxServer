@@ -1,27 +1,34 @@
+function getCookieValueByRegEx(a, b){
+        b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)');
+        return b ? b.pop() : '';
+    }
+
 new Vue({
-    el: "#login",
+    el: "#dashboard",
     data: {
-        school: {}
+        school: {},
+        token: "",
+        id: "",
+        events:{}
     },
     methods: {
+        getCredentials:  function(){
+            this.token = (getCookieValueByRegEx('_sid'));
+            this.id = (getCookieValueByRegEx('_id'));
+        },
         getSchool: function(){
-            this.$http({url: '/api/Schools/getSchoolData', data: this.data, method: 'GET'}).then(function(response){
-                var ct = new Date();
-                document.cookie = '_sid='+response.data.response.data.secret.id+'; expires=0; path=/';
-                document.cookie = '_id='+response.data.response.data.teacher.id+'; expires='+new Date(ct.getTime()+31104000000)+'; path=/';
-                if(response.data.response.data.isFirst){
-                    document.cookie = '_isf='+response.data.response.data.isFirst+'; expires=0; path=/'
-                }
-                window.location.href="/teacher";
+            this.$http({url: '/api/Schools/getSchoolData', data: {query:JSON.stringify({id:this.id, accessToken:this.token, scope:"web"})}, method: 'GET'}).then(function(response){
+                console.log(response);
+                this.school = response.data.response.schoolInstance;
                 return;
             }, function(error){
-                $.noty.closeAll();
-                noty({text: error.data.error.message, layout: 'topCenter', type: 'error'});
+                window.location.href= "/school/login.html";
                 return;
             });
         }
     },
     ready: function(){
+        this.getCredentials();
         this.getSchool();
     }
 });
