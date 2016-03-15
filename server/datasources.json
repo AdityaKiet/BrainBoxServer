@@ -16,7 +16,7 @@
     "name": "storage",
     "connector": "loopback-component-storage",
     "provider": "filesystem",
-    "root": "/home/abhishek/",
+    "root": "/Users/smpx-imac1/images",
     "maxFileSize": "52428800"
   }
 }

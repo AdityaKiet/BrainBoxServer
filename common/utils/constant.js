@@ -97,3 +97,5 @@ define("DESTROY_ACCESS_TOKEN_TIME",10);         //in minutes
 define("TEACHER_PROFILE_UPDATED" , "Hello ! TEACHER_NAME_HERE , your profile has been updated from school admin");
 
 define("STUDENT_PROFILE_UPDATED" , "Hello ! STUDENT_NAME_HERE , your profile has been updated from school admin");
+
+define("STAFF_PROFILE_UPDATED" , "Hello ! STAFF_NAME_HERE , your profile has been updated from school admin");

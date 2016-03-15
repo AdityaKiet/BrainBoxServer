@@ -428,6 +428,7 @@ module.exports = function(School) {
                                     response.schoolInstance.studentCount = schoolInstance.studentCount;
                                     response.schoolInstance.teacherCount = schoolInstance.teacherCount;
                                     response.schoolInstance.totalUsers = schoolInstance.totalUsers;
+                                    response.schoolInstance.visitors = 15;
 
                                     util.updateUserAccessToken(AccessTokenx, null, schoolInstance.id, data.scope, function(err, accessToken){
                                         if(err){
@@ -664,6 +665,100 @@ module.exports = function(School) {
                     ],
             returns: {arg:'response',type:'object'},
             http: {path: '/addStudent', verb: 'post'}
+        }
+    );
+
+    School.addStaff = function(required, data , cb){
+        var AccessTokenx = School.app.models.AccessTokenx;
+        var Staff = School.app.models.Staff;
+        var currentTime = new Date();
+        if(validate.isEmpty(required)){
+            cb(util.getGenericError("Error", 400, "Data not Received"));
+            return;
+        }
+        if(validate.isEmpty(data)){
+            cb(util.getGenericError("Error", 400, "Data not Received"));
+            return;
+        }
+        if(!validate.isValidRequired(required)){
+            cb(util.getGenericError("Error",400,"Data is invalid"));
+            return;
+        }
+        if(!data.staffName || !validator.isLength(data.staffName, {min:2, max: 100})){
+            cb(util.getGenericError("Error", 400, "Invalid Staff Name"));
+            return;
+        }
+        if(data.mobile && !validator.isNumeric(data.mobile) && !validator.isLength(data.mobile, {min:10, max: 10})){
+            cb(util.getGenericError("Error", 400, "Invalid Phone number"));
+            return;
+        }
+
+        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: required.accessToken}}}],
+            where: {id: required.id}}, function(err, schoolInstance){
+            if(err){
+                cb(util.getInternalServerError(err));
+                return;
+            }
+            if(!schoolInstance){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+            if(!schoolInstance.accessTokenxs()[0]){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+            if(!currentTime > schoolInstance.accessTokenxs()[0].expiry){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+
+            util.cryptPassword("staff123" , function(err , hashPassword){
+              if(err){
+                cb(util.getInternalServerError(err));
+                return;
+              }
+              data.password = hashPassword;
+              data.isFirst = true;
+              schoolInstance.staffs.create(data , function(err, newStaffInstance){
+                if(err){
+                  cb(util.getInternalServerError(err));
+                  return;
+                }
+                util.updateUserAccessToken(AccessTokenx,null , schoolInstance.id, required.scope, function(err, accessToken){
+                  if(err){
+                    cb(util.getInternalServerError(err));
+                    return;
+                  }
+                  data.accessToken = accessToken;
+                  if (data.email){
+                      var html = "<h1>Congrats !!! "+ data.staffName + " is registered.<br/>Email : " +
+                      data.email + "<br/>Password : student123</h1>";
+                      util.sendEmail(data.email, "Success",  html, constant.FROM_NO_REPLY);
+                  }
+                  if(data.mobile){
+                    util.sendSMS(data.mobile, constant.SCHOOL_REG_SMS.replace("SCHOOLNAME", data.staffName));
+                  }
+                  var response = {};
+                  response.data = data;
+                  response.status = 200;
+                  response.message = 'Staff is successfully registered';
+                  cb(null, response);
+                });
+              });
+            });
+          });
+        };
+
+    School.remoteMethod(
+        'addStaff',
+        {
+            description: "Add new Staff",
+            accepts: [
+                        {arg: 'required', type: 'object', required: true},
+                        {arg: 'data', type: 'object', required: true}
+                    ],
+            returns: {arg:'response',type:'object'},
+            http: {path: '/addStaff', verb: 'post'}
         }
     );
 
@@ -1123,6 +1218,89 @@ module.exports = function(School) {
     );
 
 
+    School.deleteStaff = function(required, data, cb){
+        var AccessTokenx = School.app.models.AccessTokenx;
+        var Staff = School.app.models.Staff;
+        var currentTime = new Date();
+
+        if(validate.isEmpty(required)){
+            cb(util.getGenericError("Error", 400, "Data not Received"));
+            return;
+        }
+        if(validate.isEmpty(data)){
+            cb(util.getGenericError("Error", 400, "Data not Received"));
+            return;
+        }
+        if(!validate.isValidRequired(required)){
+            cb(util.getGenericError("Error",400,"Data is invalid"));
+            return;
+        }
+        if(!data.id){
+            cb(util.getGenericError("Error", 400, "Error no staff ID"));
+            return;
+        }
+        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: required.accessToken}}}], where: {id: required.id}}, function(err, schoolInstance){
+            if(err){
+                cb(util.getInternalServerError(err));
+                return;
+            }
+            if(!schoolInstance){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+            if(!schoolInstance.accessTokenxs()[0]){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+            if(!currentTime > schoolInstance.accessTokenxs()[0].expiry){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+
+            Staff.findOne({where :{id : data.id}}, function(err, staffInstance){
+                if(err){
+                    cb(util.getInternalServerError(err));
+                    return;
+                }
+                if(!staffInstance){
+                    cb(util.getGenericError("Error", 401,"Invalid Staff ID"));
+                    return;
+                }
+                Staff.destroyById(staffInstance.id, function(err){
+                    if(err){
+                        cb(util.getInternalServerError(err));
+                        return;
+                    }
+                    util.updateUserAccessToken(AccessTokenx, schoolInstance.accessTokenxs()[0].id, required.id, required.scope, function(err, accessToken){
+                        if(err){
+                            cb(util.getInternalServerError(err));
+                            return;
+                        }
+                        var response = {};
+                        response.accessToken = accessToken;
+                        response.message = "Staff Deleted successfully";
+                        cb(null, response);
+                    });
+                });
+            });
+        });
+    };
+
+    School.remoteMethod(
+        'deleteStaff',
+        {
+            description: "Delete a staff",
+            accepts: [
+                        {arg: 'required', type: 'object', required: true},
+                        {arg: 'data', type: 'object', required: true}
+                    ],
+            returns: {arg:'response',type:'object'},
+            http: {path: '/deleteStaff', verb: 'post'}
+        }
+    );
+
+
+
     School.getTeachers = function(query, cb){
         var Teacher = School.app.models.Teacher;
         var AccessTokenx = School.app.models.AccessTokenx;
@@ -1277,6 +1455,85 @@ module.exports = function(School) {
             accepts: {arg: 'query', type: 'object', required: true},
             returns: {arg:'response',type:'object'},
             http: {path: '/getStudents', verb: 'get'}
+        }
+    );
+
+    School.getStaff = function(query, cb){
+        var Staff = School.app.models.Staff;
+        var AccessTokenx = School.app.models.AccessTokenx;
+        var currentTime = new Date();
+
+        if(validate.isEmpty(query)){
+            cb(util.getGenericError("Invalid data", 400, "Error"));
+            return;
+        }
+        if(!validate.isValidRequired(query)){
+            cb(util.getGenericError("Invalid required data", 400, "Error"));
+            return;
+        }
+
+        if(!query.limit || typeof query.limit != "number" || query.limit <= 0){
+            cb(util.getGenericError("Invalid Limit", 400, "Error"));
+            return;
+        }
+        if(typeof query.skip != "number" || query.skip < 0){
+            cb(util.getGenericError("Invalid skip", 400, "Error"));
+            return;
+        }
+
+        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: query.accessToken}}}],
+            where: {id: query.id}}, function(err, schoolInstance){
+            if(err){
+                cb(util.getInternalServerError(err));
+                return;
+            }
+            if(!schoolInstance){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+            if(!schoolInstance.accessTokenxs()[0]){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+            if(!currentTime > schoolInstance.accessTokenxs()[0].expiry){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+
+
+            Staff.find({where : {schoolId : query.id} , limit : query.limit, skip : query.skip}, function(err, staffs){
+                if(err){
+                    cb(util.getInternalServerError(err));
+                    return;
+                }
+                if(!staffs){
+                    cb(util.getGenericError("Error", 400, "Staffs not found"));
+                    return;
+                }
+
+                util.updateUserAccessToken(AccessTokenx,null , query.id, query.scope, function(err, accessToken){
+                    if(err){
+                        cb(util.getInternalServerError(err));
+                        return;
+                    }
+                    var response = {};
+                    response.staffs = staffs;
+                    response.count = staffs.length;
+                    var data = {};
+                    data.accessToken = accessToken;
+                    response.data = data;
+                    cb(null, response);
+                });
+            });
+        });
+    };
+    School.remoteMethod(
+        'getStaff',
+        {
+            description: "Get list of staffs of a school",
+            accepts: {arg: 'query', type: 'object', required: true},
+            returns: {arg:'response',type:'object'},
+            http: {path: '/getStaff', verb: 'get'}
         }
     );
 
@@ -1724,6 +1981,142 @@ module.exports = function(School) {
         }
     );
 
+    School.updateStaff = function(required, data, cb){
+        var Staff = School.app.models.Staff;
+        var AccessTokenx = School.app.models.AccessTokenx;
+        var currentTime = new Date();
+
+        if(validate.isEmpty(required)){
+            cb(util.getGenericError("Error", 400, "Data not Received"));
+            return;
+        }
+        if(validate.isEmpty(data)){
+            cb(util.getGenericError("Error", 400, "Data not Received"));
+            return;
+        }
+        if(!validate.isValidRequired(required)){
+            cb(util.getGenericError("Error",400,"Data is invalid"));
+            return;
+        }
+        if(!data.id){
+            cb(util.getGenericError("Error",400,"Staff ID not sent"));
+            return;
+        }
+
+        School.findOne({include: [{relation: 'accessTokenxs', scope: {where: {id: required.accessToken}}}], where: {id: required.id}}, function(err, schoolInstance){
+            if(err){
+                cb(utils.getInternalServerError(err));
+                return;
+            }
+            if(!schoolInstance){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+            if(!schoolInstance.accessTokenxs()[0]){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+            if(!currentTime > schoolInstance.accessTokenxs()[0].expiry){
+                cb(util.getGenericError("Error", 401,"Not authenticated"));
+                return;
+            }
+
+            Staff.findOne({where : {id : data.id , schoolId : required.id}}, function(err, staffInstance){
+                if(err){
+                    cb(utils.getInternalServerError(err));
+                    return;
+                }
+                if(!staffInstance){
+                    cb(util.getGenericError("Error", 400, "Staff not found"));
+                    return;
+                }
+                if(data.staffName){
+                    staffInstance.staffName = data.staffName;
+                }
+                if(data.mobile){
+                    staffInstance.mobile = data.mobile;
+                }
+                if(data.gender){
+                    staffInstance.gender = data.gender;
+                }
+                if(data.dob){
+                    staffInstance.dob = data.dob;
+                }
+                if(data.address){
+                    if(!studentInstance.address){
+                        staffInstance.address = {};
+                    }
+                    if(data.address.state){
+                        if(!validate.isState(data.address.state)){
+                            cb(util.getGenericError("Error", 400, "State is invalid"));
+                            return;
+                        }
+                        staffInstance.address.state = data.address.state;
+                    }
+                    if(data.address.city){
+                        if(!validate.isCity(data.address.city)){
+                            cb(util.getGenericError("Error", 400, "City is invalid"));
+                            return;
+                        }
+                        staffInstance.address.city = data.address.city;
+                    }
+                    if(data.address.street){
+                        if(!validate.isStreet(data.address.street)){
+                            cb(util.getGenericError("Error", 400, "Street is invalid"));
+                            return;
+                        }
+                        staffInstance.address.street = data.address.street;
+                    }
+                    if(data.address.pincode){
+                        if(!validate.isPincode(data.address.pincode)){
+                            cb(util.getGenericError("Error", 400, "Pincode is invalid"));
+                            return;
+                        }
+                        staffInstance.address.pincode = data.address.pincode;
+                    }
+                }
+
+                staffInstance.save(function(err , instance){
+                    if(err){
+                        cb(util.getInternalServerError(err));
+                        return;
+                    }
+                    util.updateUserAccessToken(AccessTokenx, schoolInstance.accessTokenxs()[0].id, required.id, required.scope, function(err, accessToken){
+                        if(err){
+                            cb(util.getInternalServerError(err));
+                            return;
+                        }
+                        if(instance.email){
+                            var html = "<h1>Hello " + instance.staffName + " , your details has been updated from school admin !!!</h1>";
+                            util.sendEmail(instance.email, "Success",  html, constant.FROM_NO_REPLY);
+                        }
+                        if(instance.mobile){
+                            util.sendSMS(instance.mobile, constant.STAFF_PROFILE_UPDATED.replace("STAFF_NAME_HERE", instance.staffName));
+                        }
+                        var response = {};
+                        response.accessToken = accessToken;
+                        response.message = "Staff Details Updated successfully";
+                        response.title = "Success";
+                        cb(null, response);
+                    });
+                });
+            });
+        });
+    };
+
+    School.remoteMethod(
+        'updateStaff',
+        {
+            description: "Update a staff",
+            accepts: [
+                        {arg: 'required', type: 'object', required: true},
+                        {arg: 'data', type: 'object', required: true}
+                    ],
+            returns: {arg:'response',type:'object'},
+            http: {path: '/updateStaff', verb: 'post'}
+        }
+    );
+
     School.getSchoolData = function(query, cb){
         var AccessTokenx =  School.app.models.AccessTokenx;
         var Student =  School.app.models.Student;
@@ -1790,6 +2183,7 @@ module.exports = function(School) {
                             response.schoolInstance.studentCount = schoolInstance.studentCount;
                             response.schoolInstance.teacherCount = schoolInstance.teacherCount;
                             response.schoolInstance.totalUsers = schoolInstance.totalUsers;
+                            response.schoolInstance.visitors = 15;
 
                             util.updateUserAccessToken(AccessTokenx, null, schoolInstance.id, query.scope, function(err, accessToken){
                                 if(err){

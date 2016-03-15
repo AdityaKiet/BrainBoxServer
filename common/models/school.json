@@ -52,6 +52,9 @@
     },
     "gender": {
       "type": "string"
+    },
+    "visitors": {
+      "type" : "number"
     }
   },
   "validations": [],
@@ -83,6 +86,11 @@
     "students": {
       "type": "hasMany",
       "model": "Student",
+      "foreignKey": "schoolId"
+    },
+    "staffs": {
+      "type": "hasMany",
+      "model": "Staff",
       "foreignKey": "schoolId"
     },
     "classes": {
