@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" class="body-full-height">
+<head>
+    <!-- META SECTION -->
+    <title>Activate Account - BrainBox</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <!-- END META SECTION -->
+
+    <!-- CSS INCLUDE -->
+    <link rel="stylesheet" type="text/css" id="theme" href="css/theme-default.css"/>
+    <!-- EOF CSS INCLUDE -->
+</head>
+<body>
+
+    <div id="activateAccount" class="login-container">
+
+        <div class="login-box animated fadeInDown" style="width: 70%; padding-top:50px;">
+            <div style="text-align: center;"><h2 style="color: #fff;">BrainBox</h2></div>
+            <div     style="margin-top: 20px;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-success">
+                            <div class="panel-heading ui-draggable-handle">
+                                <h3 class="panel-title">Create New Password</h3>
+                            </div>
+                            <form class="form-horizontal" @submit.prevent="activateSchool">
+                                <div class="panel-body">
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Enter Password</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                                <input type="text" placeholder="Create new password" v-model="password" name="password" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Confirm Password</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                                <input type="text" placeholder="Confirm entered password" v-model="confirmPassword" name="confirmPassword" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="panel-footer">
+                                    <button type="reset"class="btn btn-default">Clear Form</button>
+                                    <button type="submit" id="submit"  class="btn btn-primary pull-right">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+
+
+
+    <!-- START THIS PAGE PLUGINS-->
+    <script type="text/javascript" src="js/plugins/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="js/plugins/jquery/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/plugins/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/vue.min.js"></script>
+    <script type="text/javascript" src="js/vue-resource.min.js"></script>
+    <!-- END PLUGINS -->
+
+    <!-- THIS PAGE PLUGINS -->
+    <script type='text/javascript' src='js/plugins/noty/jquery.noty.js'></script>
+    <script type='text/javascript' src='js/plugins/noty/layouts/topCenter.js'></script>
+    <script type='text/javascript' src='js/plugins/noty/themes/default.js'></script>
+    <!-- END THIS PAGE PLUGINS -->
+
+    <!-- START TEMPLATE -->
+
+    <script type="text/javascript" src="js/plugins.js"></script>
+    <script type="text/javascript" src="js/actions.js"></script>
+    <script type="text/javascript" src="js/app/activateAccount.js"></script>
+    <!-- END TEMPLATE -->
+    <!-- END SCRIPTS -->
+    </html>

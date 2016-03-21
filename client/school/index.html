@@ -19,7 +19,7 @@
 
     <!-- EOF CSS INCLUDE -->
 </head>
-<body >
+<body id="dashboard">
     <!-- START PAGE CONTAINER -->
     <div class="page-container">
 
@@ -40,8 +40,8 @@
                             <img src="assets/images/users/avatar.jpg" alt="DPS Lucknow"/>
                         </div>
                         <div class="profile-data">
-                            <div class="profile-data-name">Admin</div>
-                            <div class="profile-data-title">DPS Lucknow</div>
+                            <div class="profile-data-name">{{school.name}}</div>
+                            <div class="profile-data-title">{{school.schoolName}}</div>
                         </div>
                         <div class="profile-controls">
                             <a href="profile.html" class="profile-control-left"><span class="fa fa-info"></span></a>
@@ -250,19 +250,19 @@
                         <div class="widget widget-default widget-carousel">
                             <div class="owl-carousel" id="owl-example">
                                 <div>
-                                    <div class="widget-title">Active Users</div>
-                                    <div class="widget-subtitle">27/08/2014 15:23</div>
-                                    <div class="widget-int">3,548</div>
+                                    <div class="widget-title">Total Users</div>
+                                    <div class="widget-subtitle">Available</div>
+                                    <div class="widget-int">{{school.totalUsers}}</div>
                                 </div>
                                 <div>
                                     <div class="widget-title">Students</div>
-                                    <div class="widget-subtitle">active</div>
-                                    <div class="widget-int">1,695</div>
+                                    <div class="widget-subtitle">Available</div>
+                                    <div class="widget-int">{{school.studentCount}}</div>
                                 </div>
                                 <div>
                                     <div class="widget-title">Teachers</div>
-                                    <div class="widget-subtitle">active</div>
-                                    <div class="widget-int">1,977</div>
+                                    <div class="widget-subtitle">Available</div>
+                                    <div class="widget-int">{{school.teacherCount}}</div>
                                 </div>
                             </div>
                             <div class="widget-controls">
@@ -538,7 +538,7 @@
                         <!-- END SALES BLOCK -->
 
                     </div>
-                    
+
 
                     <div class="col-md-4">
 
@@ -776,6 +776,8 @@
     <script type="text/javascript" src="js/plugins/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="js/plugins/jquery/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/plugins/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/vue.min.js"></script>
+    <script type="text/javascript" src="js/vue-resource.min.js"></script>
 
     <!-- END PLUGINS -->
 
@@ -797,7 +799,7 @@
     <script type="text/javascript" src="js/settings.js"></script>
     <script type="text/javascript" src="js/plugins.js"></script>
     <script type="text/javascript" src="js/actions.js"></script>
-
+    <script type="text/javascript" src="js/app/dashboard.js"></script>
     <!-- END TEMPLATE -->
     <!-- END SCRIPTS -->
 </body>

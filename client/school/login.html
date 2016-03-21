@@ -11,10 +11,10 @@
         <!-- END META SECTION -->
 
         <!-- CSS INCLUDE -->
-        <link rel="stylesheet" type="text/css" id="theme" href="../css/theme-default.css"/>
+        <link rel="stylesheet" type="text/css" id="theme" href="css/theme-default.css"/>
         <!-- EOF CSS INCLUDE -->
     </head>
-    <body>
+    <body id="login">
 
         <div class="login-container">
 
@@ -22,15 +22,15 @@
                 <div style="text-align: center;"><h2 style="color: #fff;">BrainBox</h2></div>
                 <div class="login-body">
                     <div class="login-title text-center">School login</div>
-                    <form onsubmit="return redirect()" class="form-horizontal">
+                    <form @submit.prevent="login" class="form-horizontal">
                     <div class="form-group">
                         <div class="col-md-12">
-                            <input type="text" class="form-control" placeholder="Username"/>
+                            <input type="text" v-model="data.email" class="form-control" placeholder="Email"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-12">
-                            <input type="password" class="form-control" placeholder="Password"/>
+                            <input type="password" v-model="data.password" class="form-control" placeholder="Password"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -56,10 +56,20 @@
         </div>
 
     </body>
-    <script>
-        function redirect(){
-            document.location.href="/school";
-            return false;
-        }
-    </script>
+    <!-- START SCRIPTS -->
+    <!-- START PLUGINS -->
+    <script type="text/javascript" src="js/plugins/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="js/plugins/jquery/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/plugins/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/vue.min.js"></script>
+    <script type="text/javascript" src="js/vue-resource.min.js"></script>
+    <!-- END PLUGINS -->
+
+    <!-- START TEMPLATE -->
+    <script type='text/javascript' src='js/plugins/noty/jquery.noty.js'></script>
+    <script type='text/javascript' src='js/plugins/noty/layouts/topCenter.js'></script>
+    <script type='text/javascript' src='js/plugins/noty/themes/default.js'></script>
+    <script type="text/javascript" src="js/app/login.js"></script>
+    <!-- END TEMPLATE -->
+    <!-- END SCRIPTS -->
 </html>

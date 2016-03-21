@@ -2,7 +2,7 @@
 var validator = require('validator');
 var constants = require("./constant");
 
-    function isScope(scope){ 
+    function isScope(scope){
        if(scope == constants.ANDROID_SCOPE || constants.WEB_SCOPE || constants.IOS_SCOPE){
          return true;
         }
@@ -11,7 +11,7 @@ var constants = require("./constant");
 
 //validation for the mobile
     function isMobile(mobile){
-        if(validator.isNumeric(mobile) && validator.isLength(mobile, constants.MOBILE_LEN, constants.MOBILE_LEN))   
+        if(validator.isNumeric(mobile) && validator.isLength(mobile, constants.MOBILE_LEN, constants.MOBILE_LEN))
             return true;
         return false;
     };
@@ -29,7 +29,7 @@ module.exports = {
     },
 
     isMobile : function(mobile){
-        if(validator.isNumeric(mobile) && validator.isLength(mobile, constants.MOBILE_LEN, constants.MOBILE_LEN))   
+        if(validator.isNumeric(mobile) && validator.isLength(mobile, constants.MOBILE_LEN, constants.MOBILE_LEN))
             return true;
         return false;
     },
@@ -84,7 +84,7 @@ module.exports = {
         if(required.accessToken){
             console.log(required.accessToken);
         }
-        return (validator.isMongoId(required.id) && isScope(required.scope) 
+        return (validator.isMongoId(required.id) && isScope(required.scope)
             && required.accessToken);
     },
 }
